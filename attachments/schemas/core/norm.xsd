@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema provides types for standardized
+identifiers of norms and standards. The standardized
+identifiers should begin with an uppercase letter.
+
+The types also allow non-standard identifiers,
+as long as they adhere to a pattern facet that
+requires them to start with a lowercase letter,
+to distinguish them from standard values.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<!-- Article -->
+
+	<xs:simpleType name="norm.ArticleNumberNormType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Article number norm identifiers, using examples from
+				VDI 3805-1:2011-10: Product data exchange
+				in the Building Services - Fundamentals,
+				Section 5.2.2.9, Record type 810
+			</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="norm.CustomNormType">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="DATANORM"/>
+					<xs:enumeration value="GTIN"/>
+					<xs:enumeration value="StLB"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+
+	<!-- Label -->
+
+	<xs:simpleType name="norm.LabelNormType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Label norm identifiers, with example
+				value for the labelling directive for
+				energy-related products (ErP)
+				http://data.europa.eu/eli/dir/2010/30/oj
+			</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="norm.CustomNormType">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ErP"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+
+	<!-- Conformance -->
+
+	<xs:simpleType name="norm.ConformanceNormType">
+		<xs:union memberTypes="norm.CustomNormType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Conformance norm identifiers, with example
+				value for the CE conformity marking
+				http://ec.europa.eu/growth/single-market/ce-marking/
+			</xs:documentation>
+		</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+
+	<!-- Custom -->
+
+	<xs:simpleType name="norm.CustomNormType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This type provides the possibility for
+				manufacturers to use norm identifiers
+				that are not defined in the standard.
+				To distinguish these custom identifiers,
+				they must begin with a lowercase letter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\p{Ll}\w*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

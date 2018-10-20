@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This is a concept of an ISO 16757
+product catalogue for radiators.
+-->
+
+<catalog xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/part16/catalog/DEV"
+         version="1"
+         xml:lang="de">
+
+	<!-- Metadata -->
+
+	<metadata>
+		<standard>
+			<name>ISO16757</name>
+			<part>16</part>
+			<version>2016-01</version>
+		</standard>
+		<manufacturer>
+			<name>Muster GmbH</name>
+			<url>http://www.muster.de</url>
+			<gln>0000000000000</gln>
+		</manufacturer>
+		<domain>
+			<country>DE</country>
+			<country>CH</country>
+		</domain>
+		<date>2016-01-01</date>
+		<title>Muster Heizkörper Katalog 2016</title>
+		<copyright>Copyright 2016 Muster GmbH</copyright>
+		<comment>Technische Änderungen vorbehalten</comment>
+	</metadata>
+
+
+	<!-- Catalogue-specific selection properties -->
+
+	<classExtensions>
+		<dictionaries>
+			<dictionary name="bSDD">
+				<url>http://bsdd.buildingsmart.org</url>
+			</dictionary>
+		</dictionaries>
+
+		<customSelectionProperties>
+			<open name="verzierung" type="string" parent="Surface">
+				<title>Verzierung der Oberfläche</title>
+			</open>
+			<enumerated name="glanzstufe" parent="PrimaryColor">
+				<title>Glanzstufe der Lackierung</title>
+				<definitions>
+					<definition dictionary="bSDD" ref="0000000000000000000000"/>
+				</definitions>
+				<enums>
+					<enum name="hochglanz">
+						<title>Hochglanz</title>
+					</enum>
+					<enum name="matt">
+						<title>Matt</title>
+					</enum>
+				</enums>
+			</enumerated>
+		</customSelectionProperties>
+	</classExtensions>
+
+
+	<!-- Class elements -->
+
+	<classElements>
+
+		<!-- Selection property values -->
+
+		<selectionValues>
+			<RadiatorType enum="Flat"/>
+			<RadiatorType enum="Design"/>
+			<TypeDesignation id="thermo" media="thermo">ThermoTherm</TypeDesignation>
+			<PressureStage id="16">16</PressureStage>
+			<Surface id="serie">Serienfarbe</Surface>
+			<PrimaryColor id="weiss">Schneeweiß</PrimaryColor>
+			<PrimaryColor id="blau">Eisblau</PrimaryColor>
+			<ConnectionType id="unten">2-Rohr, unten</ConnectionType>
+			<ConnectionType id="seite">2-Rohr, seitlich</ConnectionType>
+			<DesignVariation id="ab68">AB68, Vorlauf links, Rücklauf rechts</DesignVariation>
+			<DesignVariation id="ab86">AB86, Vorlauf rechts, Rücklauf links</DesignVariation>
+			<DesignVariation id="ab99">AB99, Vorlauf links, Rücklauf rechts</DesignVariation>
+			<DesignVariation id="ab89">AB89, Vorlauf rechts, Rücklauf links</DesignVariation>
+			<Availability id="liste">Liste</Availability>
+			<ProductElement id="frosty">Typ Frosty</ProductElement>
+			<Length id="l300">300</Length>
+			<Length id="l400">400</Length>
+			<Length id="l500">500</Length>
+		</selectionValues>
+
+
+		<!-- Catalogue-specific selection property values -->
+
+		<customSelectionValues>
+			<open name="verzierung" id="blumen">Blumenmotiv</open>
+			<open name="verzierung" id="antik">Antik</open>
+			<enumerated name="glanzstufe" enum="hochglanz"/>
+			<enumerated name="glanzstufe" enum="matt"/>
+		</customSelectionValues>
+
+
+		<!-- Technical property values -->
+
+		<technicalValues>
+			<BaseData id="thermo">
+				<Height>726</Height>
+				<Depth>50</Depth>
+				<Type>TT75</Type>
+				<Registration>6R0713</Registration>
+				<OutputFormat enum="Absolute"/>
+				<Radiation>25</Radiation>
+				<CanSit>0</CanSit>
+				<CanClimb>1</CanClimb>
+			</BaseData>
+
+			<Length id="l400">
+				<Length>400</Length>
+			</Length>
+
+			<Length id="l500">
+				<Length>500</Length>
+			</Length>
+
+			<Output id="thermo">
+				<Output>343</Output>
+				<Exponent>1.25</Exponent>
+				<Area>2</Area>
+				<Volume>3.5</Volume>
+				<MinFlow>25</MinFlow>
+				<Weight>7.5</Weight>
+				<AddWeight>.6</AddWeight>
+			</Output>
+
+			<PressureLoss id="thermo">
+				<Zeta>2.5</Zeta>
+				<Drop>1</Drop>
+				<KvConnection>1.2</KvConnection>
+				<KvLength>.9</KvLength>
+			</PressureLoss>
+
+			<Fixing id="thermo">
+				<WeightPerAxis>
+					<body>
+						# Pseudo code
+						real w = GET_TECHNICAL('Output/Weight');
+						real v = GET_TECHNICAL('Output/Volume');
+						real staendig = w*1.1 + v*1.1
+						# ...
+						return (staendig + veraenderlich) / AttachmentAxes
+					</body>
+				</WeightPerAxis>
+			</Fixing>
+
+			<Fixing id="thermo-remote">
+				<WeightPerAxis>
+					<remote>
+						<url>http://muster.de/remote/thermotherm/weight</url>
+						<attachments>
+							<technical ref="Output/Weight"/>
+							<technical ref="Output/Volume"/>
+						</attachments>
+					</remote>
+				</WeightPerAxis>
+			</Fixing>
+		</technicalValues>
+
+
+		<!-- Geometry elements -->
+
+		<geometryElements>
+
+			<!-- The content of this element is a rough
+			draft and is ignored by the catalogue schema. -->
+
+			<surfaces>
+				<surface id="thermo">
+					<ambient color="#FF44CC"/>
+					<diffuse color="#123456" alpha=".5"/>
+					<specular color="#66AA77" shine=".2"/>
+					<emission color="#987654" intensity=".6"/>
+					<texture>texturen/thermotherm.jpg</texture>
+				</surface>
+			</surfaces>
+
+			<geometry id="thermo">
+				<title>Heizkörper</title>
+				<shape lod="4">
+					<union>
+						<PRIMITIVE>
+							<surface ref="thermo" area="12 34 56" start="7 8 9" direction="1 0 0" scale=".2"/>
+						</PRIMITIVE>
+						<PRIMITIVE>...</PRIMITIVE>
+						<diff>
+							<PRIMITIVE>...</PRIMITIVE>
+							<PRIMITIVE>...</PRIMITIVE>
+						</diff>
+					</union>
+				</shape>
+				<symbol lod="1" type="2D">
+					...
+				</symbol>
+				<space>
+					<overall>...</overall>
+					<minimum>...</minimum>
+					<access>...</access>
+					<transport>...</transport>
+					<install>...</install>
+				</space>
+				<ports>
+					<port number="1" function="HFL" medium="PWC" flow="IN"
+						position="12 34 56" direction=".866 .5 0" form="Flange"
+						counterForms="Flange IntermediateFlange"
+						method="ISO128" dimensions="DN32"/>
+				</ports>
+			</geometry>
+		</geometryElements>
+
+
+		<!-- Article elements -->
+
+		<articleElements>
+			<article id="thermo400">
+				<numbers>
+					<number>AA000000000</number>
+					<number norm="GTIN">0000000000000</number>
+					<number norm="DATANORM">AA000000000</number>
+				</numbers>
+				<labels>
+					<label norm="ErP" media="thermo-erp">A++</label>
+				</labels>
+				<packing quantityUnit="LTR" packingUnit="BRL">4</packing>
+				<media ref="thermo"/>
+			</article>
+			<article id="acc-wand-kurz">
+				<numbers>
+					<number>AA000000000</number>
+				</numbers>
+			</article>
+		</articleElements>
+
+
+		<!-- Description elements -->
+
+		<descriptionElements>
+			<description id="thermo">
+				ThermoTherm<br/>Typ Frosty<br/>Effizienzklasse A++
+			</description>
+		</descriptionElements>
+
+
+		<!-- Media elements -->
+
+		<mediaElements>
+			<media id="thermo">
+				<medium format="Image" category="View">
+					<title>ThermoTherm Ansicht</title>
+					<url>bilder/ansicht_thermo.jpg</url>
+				</medium>
+				<medium format="Video" category="Installation">
+					<title>ThermoTherm Ansicht</title>
+					<url>http://youtube.com/watch?v=_0000000000</url>
+				</medium>
+			</media>
+			<media id="thermo-erp">
+				<medium format="Image" category="Label">
+					<title>ThermoTherm ErP Label</title>
+					<url>http://muster.de/dokumente/thermotherm/erp.png</url>
+				</medium>
+				<medium format="Document" category="Datasheet">
+					<title>ThermoTherm ErP Datenblatt</title>
+					<url>http://muster.de/dokumente/thermotherm/erp.pdf</url>
+				</medium>
+			</media>
+			<media id="acc-wand-kurz">
+				<medium format="Image" category="View">
+					<url>bilder/ansicht_acc-wand-kurz.jpg</url>
+				</medium>
+			</media>
+		</mediaElements>
+
+
+		<!-- Conformance elements -->
+
+		<conformanceElements>
+			<conformance id="all">
+				<marking norm="CE" certifier="TÜVSÜD" media="thermo">0000 AA 0000</marking>
+			</conformance>
+		</conformanceElements>
+
+
+		<!-- Accessories -->
+
+		<accessoryElements>
+
+			<!-- Accessory groups -->
+
+			<accessoryGroups>
+				<group id="thermo" min="0" max="2">
+					<title>ThermoTherm Zubehör</title>
+					<group ref="montage"/>
+					<group ref="thermostat"/>
+				</group>
+				<group id="montage" min="0" max="1">
+					<title>Montage</title>
+					<group ref="boden"/>
+					<group ref="wand"/>
+				</group>
+				<group id="boden" min="1" max="1">
+					<title>Bodenbefestigung</title>
+					<accessory ref="dummy" multiplier="1"/>
+				</group>
+				<group id="wand" min="1" max="1">
+					<title>Wandbefestigung</title>
+					<accessory ref="wand-kurz" multiplier="2"/>
+					<accessory ref="dummy" multiplier="1"/>
+				</group>
+				<group id="thermostat" min="0" max="1">
+					<title>Thermostat</title>
+					<accessory ref="thermostat-chrom" multiplier="1"/>
+					<accessory ref="dummy" multiplier="1"/>
+				</group>
+			</accessoryGroups>
+
+			<!-- Accessory products -->
+
+			<accessoryProducts>
+				<accessory id="wand-kurz">
+					<title>Wandkonsolen-Set kurz, WA 40mm, verzinkt</title>
+					<geometry ref="acc-wand-kurz"/>
+					<position relativeTo="thermo" origin="12 34 56" xAxis="1 0 0" yAxis="1 1 0"/>
+					<article ref="acc-wand-kurz"/>
+					<media ref="acc-wand-kurz"/>
+					<conditions>
+						<and>
+							<bss ref="RequirementClass" lessThan="3"/>
+							<technical ref="Fixing/WeightPerAxis" lessThan="150"/>
+							<technical ref="BaseData/Type" equals="TT75"/>
+							<custom ref="glanzstufe" refers="matt"/>
+							<not>
+								<selection ref="ConnectionType" refers="unten"/>
+							</not>
+							<or>
+								<bss ref="RequirementClass" equals="3"/>
+								<technical ref="Fixing/WeightPerAxis" atLeast="150"/>
+							</or>
+						</and>
+					</conditions>
+				</accessory>
+
+				<!-- Example of an accessory from another catalogue -->
+				<accessory id="thermostat-chrom">
+					<title>Thermostatkopf Chrom</title>
+					<manufacturer>
+						<name>Beispiel GmbH</name>
+						<url>http://beispiel.ch</url>
+						<gln>0000000000000</gln>
+					</manufacturer>
+					<external>
+						<catalog>http://beispiel.ch/iso16757_12_beispiel_160101.xml</catalog>
+						<product ref="stat-chr"/>
+					</external>
+				</accessory>
+
+				<accessory id="dummy">
+					<title>Dummy accessory for exemplary references</title>
+				</accessory>
+			</accessoryProducts>
+		</accessoryElements>
+	</classElements>
+
+
+	<!-- Products -->
+
+	<products>
+		<product id="thermo400">
+			<index>
+				<RadiatorType enum="Flat"/>
+				<TypeDesignation ref="thermo"/>
+				<PressureStage ref="16"/>
+				<Surface ref="serie"/>
+				<PrimaryColor ref="blau"/>
+				<ConnectionType ref="unten"/>
+				<DesignVariation ref="ab68"/>
+				<Availability ref="liste"/>
+				<ProductElement ref="frosty"/>
+				<Length ref="l400"/>
+				<open name="verzierung" ref="blumen"/>
+				<enumerated name="glanzstufe" enum="matt"/>
+			</index>
+
+			<BaseData ref="thermo"/>
+			<Length ref="l400"/>
+			<Output ref="thermo"/>
+			<PressureLoss ref="thermo"/>
+			<Fixing ref="thermo"/>
+
+			<geometry ref="thermo"/>
+			<article ref="thermo400"/>
+			<description ref="thermo"/>
+			<media ref="thermo"/>
+			<conformance ref="all"/>
+			<accessories ref="thermo"/>
+
+			<!-- Product element extension -->
+			<bsp:permalink xmlns:bsp="http://beispiel.ch/iso16757">
+				http://beispiel.ch/products/cat0000/00000000000
+			</bsp:permalink>
+		</product>
+	</products>
+</catalog>

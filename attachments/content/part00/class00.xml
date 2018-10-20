@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This is a dummy class to demonstrate and test
+exclusive proxies and multi-valued technical
+properties, which are not needed in part 16.
+
+For the sake of brevity, the property elements
+do not contain a <definitions> element. In an
+actual class, all properties should.
+-->
+
+<class xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/class/DEV"
+       version="1"
+       xml:lang="en">
+
+	<!-- Metadata -->
+
+	<metadata>
+		<standard>
+			<name>ISO16757</name>
+			<part>00</part>
+			<version>2016-01</version>
+		</standard>
+		<category>
+			<name>Dummy</name>
+			<ics>00.000.00</ics>
+		</category>
+	</metadata>
+
+
+	<!-- Selection Property Hierarchy -->
+
+	<selectionProxies>
+
+		<!-- The following example of an
+		exclusive proxy recreates the example from
+		ISO FDIS 16757-1:2014, Figure 10, page 30 -->
+
+		<exclusive represent="AirDuctType">
+			<if>
+				<enum ref="SlottedAirDuct"/>
+				<then>
+					<inclusive represent="NoOfSlot">
+						<inclusive represent="CeilingCompensation"/>
+						<inclusive represent="OutletAirDirection"/>
+					</inclusive>
+				</then>
+			</if>
+			<if>
+				<enum ref="WideAngleNozzle"/>
+				<then>
+					<inclusive represent="FixedOrAdjustable"/>
+				</then>
+			</if>
+			<if>
+				<enum ref="VentilationGrid"/>
+				<then>
+					<inclusive represent="FrameShape">
+						<inclusive represent="InletAirOrOutletAir"/>
+						<inclusive represent="FrameType"/>
+					</inclusive>
+				</then>
+			</if>
+			<if>
+				<enum ref="CeilingAirDuct"/>
+				<then>
+					<inclusive represent="ConstructionType">
+						<inclusive represent="InletAirOrOutletAir"/>
+					</inclusive>
+				</then>
+			</if>
+			<if>
+				<enum ref="FloorAirDuct"/>
+				<then>
+					<inclusive represent="ConstructionType">
+						<inclusive represent="OutletAirDirection"/>
+						<inclusive represent="TwistInsert"/>
+					</inclusive>
+				</then>
+			</if>
+			<if>
+				<enum ref="SourceAirDuct"/>
+				<then>
+					<inclusive represent="ConstructionType"/>
+				</then>
+			</if>
+		</exclusive>
+	</selectionProxies>
+
+
+	<!-- Selection Properties -->
+
+	<selectionProperties>
+		<enumerated name="AirDuctType">
+			<title>Air duct type </title>
+			<enums>
+				<enum name="SlottedAirDuct">
+					<title>Slotted air duct</title>
+				</enum>
+				<enum name="WideAngleNozzle">
+					<title>Wide angle nozzle</title>
+				</enum>
+				<enum name="VentilationGrid">
+					<title>Ventilation grid</title>
+				</enum>
+				<enum name="CeilingAirDuct">
+					<title>Ceiling air duct</title>
+				</enum>
+				<enum name="FloorAirDuct">
+					<title>Floor air duct</title>
+				</enum>
+				<enum name="SourceAirDuct">
+					<title>Source air duct</title>
+				</enum>
+			</enums>
+		</enumerated>
+		<open name="NoOfSlot" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="CeilingCompensation" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="OutletAirDirection" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="FixedOrAdjustable" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="InletAirOrOutletAir" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="FrameShape" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="FrameType" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="ConstructionType" type="string">
+			<title>Pressure stage</title>
+		</open>
+		<open name="TwistInsert" type="string">
+			<title>Pressure stage</title>
+		</open>
+	</selectionProperties>
+
+
+	<!-- Technical Properties -->
+
+	<technicalProperties>
+		<block name="RootBlock">
+			<multiValue maxOccurs="2">
+				<block name="MultiBlock">
+					<multiValue maxOccurs="3">
+						<open name="MultiProp" type="string">
+							<title>Multi value property</title>
+						</open>
+					</multiValue>
+					<open name="Prop" type="string">
+						<title>Single value property 1</title>
+					</open>
+				</block>
+			</multiValue>
+
+			<open name="Prop" type="string">
+				<title>Single value property 2</title>
+			</open>
+
+			<dynamic name="TestFunction" type="string">
+				<title>Test function</title>
+			</dynamic>
+		</block>
+	</technicalProperties>
+
+
+	<!-- BSS Properties -->
+
+	<bssProperties>
+	</bssProperties>
+
+</class>

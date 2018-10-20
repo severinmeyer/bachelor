@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines types that are used to
+identify and reference properties and elements.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<!-- Property name -->
+
+	<xs:simpleType name="name.PropertyNameType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Properties are transformed to element names in the
+				catalogues. Therefore, a property name must be a
+				valid XML element name, without a namespace prefix.
+				http://www.w3.org/TR/xmlschema-2/#NCName
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NCName"/>
+	</xs:simpleType>
+
+	<xs:complexType name="name.PropertyNameRefType">
+		<xs:attribute name="ref" type="name.PropertyNameType"/>
+	</xs:complexType>
+
+
+	<!-- Enum name -->
+
+	<xs:simpleType name="name.EnumNameType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Enum names are based on the xs:NCName pattern
+				from http://www.w3.org/TR/xmlschema-2/
+				However, enum names are allowed to start with a
+				digit, to make it possible to identify enumerated
+				values with index numbers, where desired.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[\c-[:]]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="name.EnumNameRefType">
+		<xs:attribute name="ref" type="name.EnumNameType"/>
+	</xs:complexType>
+
+
+	<!-- Id -->
+
+	<xs:simpleType name="name.IdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:complexType name="name.IdRefType">
+		<xs:attribute name="ref" type="name.IdType"/>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This is a concept of an ISO 16757 product class for
+radiators, based on VDI 3805-6 [1] and corrections [2].
+
+For the sake of brevity, only a few exemplary property
+elements contain a <definitions> element. In an actual
+class, all properties should do so.
+
+[1] VDI 3805 Blatt 6; 2004-05: Produktdatenaustausch in der
+Technischen Gebäudeausrüstung - Heizkörper, Verein Deutscher
+Ingenieure, Beuth Verlag, Berlin
+
+[2] VDI 3805: Korrekturen und Ergänzungen zu Blatt 6 Heizkörper
+(2004-05), Stand 27.10.2014, http://www.vdi.de/fileadmin/vdi_de/
+redakteur_dateien/tga_dateien/Korrekturen_Blatt_6_Stand_20141027.pdf
+-->
+
+<class xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/class/DEV"
+       version="1"
+       xml:lang="en">
+
+	<!-- Metadata -->
+
+	<metadata>
+		<standard>
+			<name>ISO16757</name>
+			<part>16</part>
+			<version>2016-01</version>
+		</standard>
+		<category>
+			<name>Radiators</name>
+			<ics>91.140.01</ics>
+			<definitions>
+				<definition dictionary="bSDD" ref="0000000000000000000000"/>
+				<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+			</definitions>
+		</category>
+	</metadata>
+
+
+	<!-- Dictionaries -->
+
+	<dictionaries>
+		<dictionary name="bSDD">
+			<url>http://bsdd.buildingsmart.org</url>
+		</dictionary>
+		<dictionary name="eClass">
+			<url>http://www.eclasscontent.com</url>
+		</dictionary>
+	</dictionaries>
+
+
+	<!-- Selection Property Hierarchy -->
+
+	<selectionProxies>
+		<inclusive represent="RadiatorType">
+			<inclusive represent="TypeDesignation">
+				<inclusive represent="PressureStage"/>
+				<inclusive represent="Surface">
+					<inclusive represent="PrimaryColor"/>
+					<inclusive represent="SecondaryColor"/>
+				</inclusive>
+				<inclusive represent="ConnectionType">
+					<inclusive represent="DesignVariation"/>
+				</inclusive>
+				<inclusive represent="Availability"/>
+				<inclusive represent="ProductElement">
+					<inclusive represent="Length"/>
+				</inclusive>
+			</inclusive>
+		</inclusive>
+	</selectionProxies>
+
+
+	<!-- Selection Properties -->
+
+	<selectionProperties>
+		<enumerated name="RadiatorType">
+			<title>Radiator type</title>
+			<definitions>
+				<definition dictionary="bSDD" ref="0000000000000000000000"/>
+				<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+			</definitions>
+			<enums>
+				<enum name="Flat">
+					<title>Flat radiator</title>
+					<definitions>
+						<definition dictionary="bSDD" ref="0000000000000000000000"/>
+						<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+					</definitions>
+				</enum>
+				<enum name="Bathroom">
+					<title>Bathroom radiator</title>
+				</enum>
+				<enum name="Sectional">
+					<title>Sectional radiator</title>
+				</enum>
+				<enum name="Convector">
+					<title>Convector</title>
+				</enum>
+				<enum name="Surface">
+					<title>Heat transfer surface</title>
+				</enum>
+				<enum name="Design">
+					<title>Design radiator</title>
+				</enum>
+				<enum name="Electric">
+					<title>Electric radiator</title>
+				</enum>
+			</enums>
+		</enumerated>
+
+		<open name="TypeDesignation" type="string">
+			<title>Type designation</title>
+			<definitions>
+				<definition dictionary="bSDD" ref="0000000000000000000000"/>
+				<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+			</definitions>
+		</open>
+		<open name="PressureStage" type="decimal" unit="bar">
+			<title>Pressure stage</title>
+		</open>
+		<open name="Surface" type="string">
+			<title>Surface</title>
+		</open>
+		<open name="PrimaryColor" type="string">
+			<title>Primary color</title>
+		</open>
+		<open name="SecondaryColor" type="string">
+			<title>Secondary color</title>
+		</open>
+		<open name="ConnectionType" type="string">
+			<title>Connection type</title>
+		</open>
+		<open name="DesignVariation" type="string">
+			<title>Design variation</title>
+		</open>
+		<open name="Availability" type="string">
+			<title>Availability</title>
+		</open>
+		<open name="ProductElement" type="string">
+			<title>Product element</title>
+		</open>
+		<ranged name="Length" type="decimal" unit="mm">
+			<title>Overall length</title>
+			<range>
+				<minExclusive value="0"/>
+			</range>
+		</ranged>
+	</selectionProperties>
+
+
+	<!-- Technical Properties -->
+
+	<technicalProperties>
+		<block name="BaseData">
+			<open name="Height" type="decimal" unit="mm">
+				<title>Overall height</title>
+			</open>
+			<open name="Depth" type="decimal" unit="mm">
+				<title>Overall depth</title>
+			</open>
+			<open name="Type" type="string">
+				<title>Type</title>
+			</open>
+			<open name="Registration" type="string">
+				<title>Registration number</title>
+			</open>
+			<enumerated name="OutputFormat">
+				<title>Output data format</title>
+				<enums>
+					<enum name="Metre">
+						<title>Output per metre</title>
+					</enum>
+					<enum name="Section">
+						<title>Output per section</title>
+					</enum>
+					<enum name="Absolute">
+						<title>Absolute output</title>
+					</enum>
+					<enum name="Electric">
+						<title>Electrically heated</title>
+					</enum>
+				</enums>
+			</enumerated>
+			<open name="SectionLength" type="decimal" unit="mm">
+				<title>Section length</title>
+			</open>
+			<open name="DifferenceLength" type="decimal" unit="mm">
+				<title>Difference length</title>
+			</open>
+			<open name="IneffectiveLength" type="decimal" unit="mm">
+				<title>Ineffective length</title>
+			</open>
+			<open name="ReducedOutput" type="decimal" unit="percent">
+				<title>Reduced output of ineffective length</title>
+			</open>
+			<open name="Radiation" type="decimal" unit="percent">
+				<title>Radiation proportion</title>
+			</open>
+			<open name="CanSit" type="boolean">
+				<title>Suitable for sitting</title>
+			</open>
+			<open name="CanClimb" type="boolean">
+				<title>Suitable for sitting</title>
+			</open>
+		</block>
+
+		<block name="Length">
+			<ranged name="Length" type="decimal" unit="mm">
+				<title>Overall length</title>
+				<range>
+					<minExclusive value="0"/>
+				</range>
+			</ranged>
+		</block>
+
+		<block name="Output">
+			<open name="Output" type="decimal" unit="W">
+				<title>Standardised heat output</title>
+			</open>
+			<open name="Exponent" type="decimal">
+				<title>Radiator exponent</title>
+			</open>
+			<open name="Area" type="decimal" unit="m2">
+				<title>Paint area (based on length or section)</title>
+			</open>
+			<open name="Volume" type="decimal" unit="l">
+				<title>Water content (based on length or section)</title>
+			</open>
+			<open name="MinFlow" type="decimal" unit="percent">
+				<title>Minimum mass flow</title>
+			</open>
+			<open name="Weight" type="decimal" unit="kg">
+				<title>Weight (based on length or section)</title>
+			</open>
+			<open name="AddWeight" type="decimal" unit="kg">
+				<title>Additional weight (not length-related)</title>
+			</open>
+		</block>
+
+		<block name="PressureLoss">
+			<open name="Zeta" type="decimal">
+				<title>Zeta value of the radiator</title>
+			</open>
+			<open name="Drop" type="decimal" unit="Pa">
+				<title>Pressure drop ∆p over the radiator</title>
+			</open>
+			<open name="KvConnection" type="decimal" unit="m3/h">
+				<title>kv-value (for radiator connection)</title>
+			</open>
+			<open name="KvLength" type="decimal" unit="m3/h">
+				<title>kv-value (for running metre or section)</title>
+			</open>
+		</block>
+
+		<block name="Fixing">
+			<dynamic name="WeightPerAxis" type="decimal" unit="kg">
+				<title>Weight per axis</title>
+				<description>
+					Determines the force acting upon each attachment axis,
+					to facilitate the correct choice of fixing accessories,
+					in accordance to VDI 6036.
+				</description>
+				<definitions>
+					<definition dictionary="bSDD" ref="0000000000000000000000"/>
+					<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+				</definitions>
+				<parameters>
+					<bss ref="RequirementClass"/>
+					<bss ref="AttachmentAxes"/>
+					<bss ref="FloorDistance"/>
+					<bss ref="WallDistance"/>
+					<bss ref="IsFreestanding"/>
+					<bss ref="HasTopAccess"/>
+				</parameters>
+			</dynamic>
+		</block>
+	</technicalProperties>
+
+
+	<!-- BSS Properties -->
+
+	<bssProperties>
+		<ranged name="RequirementClass" type="integer">
+			<title>Requirement class according to VDI 6036</title>
+			<definitions>
+				<definition dictionary="bSDD" ref="0000000000000000000000"/>
+				<definition dictionary="eClass" ref="0000-AAAA#AA-AAAAAA#0"/>
+			</definitions>
+			<range>
+				<minInclusive value="1"/>
+				<maxInclusive value="4"/>
+			</range>
+		</ranged>
+		<ranged name="AttachmentAxes" type="integer">
+			<title>Number of vertical attachement axes</title>
+			<range>
+				<minInclusive value="1"/>
+			</range>
+		</ranged>
+		<ranged name="FloorDistance" type="decimal" unit="mm">
+			<title>Distance from floor to radiator</title>
+			<range>
+				<minExclusive value="0.0"/>
+			</range>
+		</ranged>
+		<ranged name="WallDistance" type="decimal" unit="mm">
+			<title>Distance from wall to radiator</title>
+			<range>
+				<minExclusive value="0.0"/>
+			</range>
+		</ranged>
+		<open name="IsFreestanding" type="boolean">
+			<title>Is the radiator freestanding?</title>
+		</open>
+		<open name="HasTopAccess" type="boolean">
+			<title>Is the radiator accessible from the top?</title>
+		</open>
+	</bssProperties>
+
+</class>

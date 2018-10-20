@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This is a dummy catalogue to demonstrate
+and test multi-valued technical properties,
+which are not needed in part 16.
+-->
+
+<catalog xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/part00/catalog/DEV"
+         version="1"
+         xml:lang="en">
+
+	<!-- Metadata -->
+
+	<metadata>
+		<standard>
+			<name>ISO16757</name>
+			<part>00</part>
+			<version>2016-01</version>
+		</standard>
+		<manufacturer>
+			<name>Dummy</name>
+		</manufacturer>
+		<date>2016-01-01</date>
+	</metadata>
+
+
+	<!-- Class elements -->
+
+	<classElements>
+		<selectionValues>
+		</selectionValues>
+
+		<technicalValues>
+			<RootBlock id="test">
+				<MultiBlock>
+					<MultiProp>Foo 1-1</MultiProp>
+					<MultiProp>Foo 1-2</MultiProp>
+					<MultiProp>Foo 1-3</MultiProp>
+					<Prop>Bar 1</Prop>
+				</MultiBlock>
+
+				<MultiBlock>
+					<MultiProp>Foo 2-1</MultiProp>
+					<MultiProp>Foo 2-2</MultiProp>
+					<Prop>Bar 2</Prop>
+				</MultiBlock>
+
+				<Prop>Qux</Prop>
+
+				<TestFunction>
+					<remote>
+						<url>http://dummy.test</url>
+						<attachments>
+							<technical ref="RootBlock/Prop"/>
+							<technical ref="RootBlock/MultiBlock[1]/Prop"/>
+							<technical ref="RootBlock/MultiBlock[1]/MultiProp[3]"/>
+							<technical ref="RootBlock/MultiBlock[2]/MultiProp[2]"/>
+						</attachments>
+					</remote>
+				</TestFunction>
+			</RootBlock>
+		</technicalValues>
+	</classElements>
+
+
+	<!-- Products -->
+
+	<products>
+		<product>
+			<index/>
+			<RootBlock ref="test"/>
+		</product>
+	</products>
+</catalog>

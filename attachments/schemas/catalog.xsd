@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines the generic
+components of a product catalogue.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xs:import schemaLocation="w3c/xml.xsd" namespace="http://www.w3.org/XML/1998/namespace"/>
+
+	<xs:include schemaLocation="core/code.xsd"/>
+	<xs:include schemaLocation="core/common.xsd"/>
+	<xs:include schemaLocation="core/geometry.xsd"/>
+	<xs:include schemaLocation="core/name.xsd"/>
+	<xs:include schemaLocation="core/norm.xsd"/>
+
+
+	<!-- Root type -->
+
+	<xs:complexType name="cat.CatalogType">
+		<xs:sequence>
+			<xs:element name="metadata" type="cat.MetadataType"/>
+			<xs:element name="classExtensions" type="cat.ClassExtensionsType" minOccurs="0"/>
+			<xs:element name="classElements" type="cat.ClassElementsType"/>
+			<xs:element name="products" type="cat.ProductsType"/>
+		</xs:sequence>
+		<xs:attribute name="version" type="xs:decimal" use="required"/>
+		<xs:attribute ref="xml:lang"/>
+	</xs:complexType>
+
+
+	<!-- Metadata -->
+
+	<xs:complexType name="cat.MetadataType">
+		<xs:sequence>
+			<xs:element name="standard" type="cat.MetadataStandardType"/>
+			<xs:element name="manufacturer" type="common.ManufacturerType"/>
+			<xs:element name="domain" type="cat.MetadataDomainType" minOccurs="0"/>
+			<xs:element name="date" type="xs:date"/>
+			<xs:element name="title" type="xs:string" minOccurs="0"/>
+			<xs:element name="copyright" type="xs:string" minOccurs="0"/>
+			<xs:element name="comment" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.MetadataStandardType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" fixed="ISO16757"/>
+			<xs:group ref="content.MetadataStandardGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.MetadataDomainType">
+		<xs:sequence>
+			<xs:element name="country" type="code.CountryType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Class extensions -->
+
+	<xs:complexType name="cat.ClassExtensionsType">
+		<xs:sequence>
+			<xs:element name="dictionaries" type="common.DictionariesType" minOccurs="0"/>
+			<xs:element name="customSelectionProperties" type="cat.CustomSelectionPropertiesType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomSelectionPropertiesType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="open" type="cat.CustomTypedPropertyType"/>
+			<xs:element name="ranged" type="cat.CustomRangedPropertyType"/>
+			<xs:element name="enumerated" type="cat.CustomEnumeratedPropertyType"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomTypedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.TypedPropertyType">
+				<xs:attribute name="parent" type="content.SelectionPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomRangedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.RangedPropertyType">
+				<xs:attribute name="parent" type="content.SelectionPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomEnumeratedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.EnumeratedPropertyType">
+				<xs:attribute name="parent" type="content.SelectionPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<!-- Class elements -->
+
+	<xs:complexType name="cat.ClassElementsType">
+		<xs:sequence>
+			<xs:element name="selectionValues" type="cat.SelectionValuesType"/>
+			<xs:element name="customSelectionValues" type="cat.CustomSelectionValuesType" minOccurs="0"/>
+			<xs:element name="technicalValues" type="cat.TechnicalValuesType"/>
+			<xs:element name="geometryElements" type="geo.GeometryElementsType" minOccurs="0"/>
+			<xs:element name="articleElements" type="cat.ArticleElementsType" minOccurs="0"/>
+			<xs:element name="descriptionElements" type="cat.DescriptionElementsType" minOccurs="0"/>
+			<xs:element name="mediaElements" type="cat.MediaElementsType" minOccurs="0"/>
+			<xs:element name="conformanceElements" type="cat.ConformanceElementsType" minOccurs="0"/>
+			<xs:element name="accessoryElements" type="cat.AccessoryElementsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Selection values -->
+
+	<xs:complexType name="cat.SelectionValuesType">
+		<xs:group ref="content.SelectionValuesGroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.StringSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="id" type="name.IdType" use="required"/>
+				<xs:attribute name="media" type="name.IdType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DecimalSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:decimal">
+				<xs:attribute name="id" type="name.IdType" use="required"/>
+				<xs:attribute name="media" type="name.IdType"/>
+				<xs:attribute name="unit" type="code.UnitType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.IntegerSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:integer">
+				<xs:attribute name="id" type="name.IdType" use="required"/>
+				<xs:attribute name="media" type="name.IdType"/>
+				<xs:attribute name="unit" type="code.UnitType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.BooleanSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean">
+				<xs:attribute name="id" type="name.IdType" use="required"/>
+				<xs:attribute name="media" type="name.IdType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.SelectionEnumType">
+		<xs:attribute name="enum" type="name.EnumNameType" use="required"/>
+		<xs:attribute name="media" type="name.IdType"/>
+	</xs:complexType>
+
+
+	<!-- Custom selection values -->
+
+	<xs:complexType name="cat.CustomSelectionValuesType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="open" type="cat.CustomStringSelectionValueType"/>
+			<xs:element name="ranged" type="cat.CustomDecimalSelectionValueType"/>
+			<xs:element name="enumerated" type="cat.CustomSelectionEnumType"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomStringSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="cat.StringSelectionValueType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomDecimalSelectionValueType">
+		<xs:simpleContent>
+			<xs:extension base="cat.DecimalSelectionValueType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomSelectionEnumType">
+		<xs:complexContent>
+			<xs:extension base="cat.SelectionEnumType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<!-- Technical values -->
+
+	<xs:complexType name="cat.TechnicalValuesType">
+		<xs:group ref="content.TechnicalValuesGroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.TechnicalRootBlockType">
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.StringTechnicalValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DecimalTechnicalValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:decimal">
+				<xs:attribute name="unit" type="code.UnitType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.IntegerTechnicalValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:integer">
+				<xs:attribute name="unit" type="code.UnitType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.BooleanTechnicalValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean"/>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DynamicTechnicalValueType">
+		<xs:choice>
+			<xs:element name="body" type="xs:string"/>
+			<xs:element name="remote" type="cat.DynamicValueRemoteType"/>
+		</xs:choice>
+		<xs:attribute name="unit" type="code.UnitType"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DynamicValueRemoteType">
+		<xs:sequence>
+			<xs:element name="url" type="xs:anyURI"/>
+			<xs:element name="attachments" type="cat.DynamicValueAttachmentsType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DynamicValueAttachmentsType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="selection" type="cat.SelectionRefType"/>
+			<xs:element name="technical" type="cat.TechnicalRefType"/>
+			<xs:element name="bss" type="cat.BssRefType"/>
+			<xs:element name="custom" type="name.IdRefType"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="cat.SelectionRefType">
+		<xs:attribute name="ref" type="content.SelectionPropertyNamesType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.TechnicalRefType">
+		<xs:attribute name="ref" type="content.TechnicalPropertyNamesType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.BssRefType">
+		<xs:attribute name="ref" type="content.BssPropertyNamesType" use="required"/>
+	</xs:complexType>
+
+
+	<!-- Articles -->
+
+	<xs:complexType name="cat.ArticleElementsType">
+		<xs:sequence>
+			<xs:element name="article" type="cat.ArticleType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticleType">
+		<xs:sequence>
+			<xs:element name="numbers" type="cat.ArticleNumbersType"/>
+			<xs:element name="labels" type="cat.ArticleLabelsType" minOccurs="0"/>
+			<xs:element name="packing" type="cat.ArticlePackingType" minOccurs="0"/>
+			<xs:element name="media" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticleNumbersType">
+		<xs:sequence>
+			<xs:element name="number" type="cat.ArticleNumberType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticleNumberType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="norm" type="norm.ArticleNumberNormType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticlePackingType">
+		<xs:simpleContent>
+			<xs:extension base="xs:positiveInteger">
+				<xs:attribute name="quantityUnit" type="code.QuantityUnitType"/>
+				<xs:attribute name="packingUnit" type="code.PackingUnitType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticleLabelsType">
+		<xs:sequence>
+			<xs:element name="label" type="cat.ArticleLabelType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ArticleLabelType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="norm" type="norm.LabelNormType"/>
+				<xs:attribute name="media" type="name.IdType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+
+	<!-- Descriptions -->
+
+	<xs:complexType name="cat.DescriptionElementsType">
+		<xs:sequence>
+			<xs:element name="description" type="cat.DescriptionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.DescriptionType">
+		<xs:complexContent>
+			<xs:extension base="common.DescriptionTextType">
+				<xs:attribute name="id" type="name.IdType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<!-- Media -->
+
+	<xs:complexType name="cat.MediaElementsType">
+		<xs:sequence>
+			<xs:element name="media" type="cat.MediaType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.MediaType">
+		<xs:sequence>
+			<xs:element name="medium" type="cat.MediumType" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.MediumType">
+		<xs:sequence>
+			<xs:element name="title" type="common.TitleTextType" minOccurs="0"/>
+			<xs:element name="url" type="xs:anyURI"/>
+		</xs:sequence>
+		<xs:attribute name="format" type="code.MediumFormatType"/>
+		<xs:attribute name="category" type="code.MediumCategoryType"/>
+	</xs:complexType>
+
+
+	<!-- Conformance -->
+
+	<xs:complexType name="cat.ConformanceElementsType">
+		<xs:sequence>
+			<xs:element name="conformance" type="cat.ConformanceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ConformanceType">
+		<xs:sequence>
+			<xs:element name="marking" type="cat.ConformanceMarkingType" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ConformanceMarkingType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="norm" type="norm.ConformanceNormType"/>
+				<xs:attribute name="certifier" type="xs:string"/>
+				<xs:attribute name="media" type="name.IdType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+
+	<!-- Accessories -->
+
+	<xs:complexType name="cat.AccessoryElementsType">
+		<xs:sequence>
+			<xs:element name="accessoryGroups" type="cat.AccessoryGroupsType"/>
+			<xs:element name="accessoryProducts" type="cat.AccessoryProductsType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Accessory groups -->
+
+	<xs:complexType name="cat.AccessoryGroupsType">
+		<xs:sequence>
+			<xs:element name="group" type="cat.AccessoryGroupType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryGroupType">
+		<xs:sequence>
+			<xs:element name="title" type="common.TitleTextType"/>
+			<xs:choice>
+				<xs:element name="group" type="name.IdRefType" maxOccurs="unbounded"/>
+				<xs:element name="accessory" type="cat.AccessoryProductRefType" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+		<xs:attribute name="min" type="xs:nonNegativeInteger" use="required"/>
+		<xs:attribute name="max" type="xs:positiveInteger" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryProductRefType">
+		<xs:attribute name="ref" type="name.IdType" use="required"/>
+		<xs:attribute name="multiplier" type="xs:positiveInteger" use="required"/>
+	</xs:complexType>
+
+
+	<!-- Accessory products -->
+
+	<xs:complexType name="cat.AccessoryProductsType">
+		<xs:sequence>
+			<xs:element name="accessory" type="cat.AccessoryProductType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryProductType">
+		<xs:sequence>
+			<xs:element name="title" type="common.TitleTextType" maxOccurs="unbounded"/>
+			<xs:element name="geometry" type="name.IdRefType" minOccurs="0"/>
+			<xs:element name="position" type="cat.AccessoryProductPositionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="article" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description" type="name.IdRefType" minOccurs="0"/>
+			<xs:element name="media" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="conformance" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="accessories" type="name.IdRefType" minOccurs="0"/>
+			<xs:element name="manufacturer" type="common.ManufacturerType" minOccurs="0"/>
+			<xs:element name="external" type="cat.AccessoryProductExternalType" minOccurs="0"/>
+			<xs:element name="conditions" type="cat.AccessoryProductConditionsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryProductPositionType">
+		<xs:attribute name="relativeTo" type="name.IdType" use="required"/>
+		<xs:attribute name="origin" type="geo.VectorType" use="required"/>
+		<xs:attribute name="xAxis" type="geo.VectorType" use="required"/>
+		<xs:attribute name="yAxis" type="geo.VectorType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryProductExternalType">
+		<xs:sequence>
+			<xs:element name="catalog" type="xs:anyURI"/>
+			<xs:element name="product" type="name.IdRefType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Accessory product conditions -->
+
+	<xs:complexType name="cat.AccessoryProductConditionsType">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="and" type="cat.AccessoryProductConditionsType"/>
+			<xs:element name="or" type="cat.AccessoryProductConditionsType"/>
+			<xs:element name="not" type="cat.AccessoryProductConditionsType"/>
+
+			<xs:element name="selection" type="cat.SelectionConditionType"/>
+			<xs:element name="custom" type="cat.CustomConditionType"/>
+			<xs:element name="technical" type="cat.TechnicalConditionType"/>
+			<xs:element name="bss" type="cat.BssConditionType"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="cat.AccessoryProductConditionType">
+		<xs:attribute name="lessThan" type="xs:decimal"/>
+		<xs:attribute name="greaterThan" type="xs:decimal"/>
+		<xs:attribute name="atLeast" type="xs:decimal"/>
+		<xs:attribute name="atMost" type="xs:decimal"/>
+		<xs:attribute name="equals" type="xs:string"/>
+		<xs:attribute name="refers" type="name.IdType"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.SelectionConditionType">
+		<xs:complexContent>
+			<xs:extension base="cat.AccessoryProductConditionType">
+				<xs:attribute name="ref" type="content.SelectionPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomConditionType">
+		<xs:complexContent>
+			<xs:extension base="cat.AccessoryProductConditionType">
+				<xs:attribute name="ref" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.TechnicalConditionType">
+		<xs:complexContent>
+			<xs:extension base="cat.AccessoryProductConditionType">
+				<xs:attribute name="ref" type="content.TechnicalPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.BssConditionType">
+		<xs:complexContent>
+			<xs:extension base="cat.AccessoryProductConditionType">
+				<xs:attribute name="ref" type="content.BssPropertyNamesType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<!-- Products -->
+
+	<xs:complexType name="cat.ProductsType">
+		<xs:sequence>
+			<xs:element name="product" type="cat.ProductType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ProductType">
+		<xs:sequence>
+			<xs:element name="index" type="cat.ProductIndexType"/>
+			<xs:group ref="content.ProductPropertiesGroup"/>
+			<xs:element name="geometry" type="name.IdRefType" minOccurs="0"/>
+			<xs:element name="article" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description" type="name.IdRefType" minOccurs="0"/>
+			<xs:element name="media" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="conformance" type="name.IdRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="accessories" type="name.IdRefType" minOccurs="0"/>
+			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="name.IdType" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.ProductIndexType">
+		<xs:sequence>
+			<xs:group ref="content.ProductIndexGroup"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="open" type="cat.CustomSelectionValueRefType"/>
+				<xs:element name="ranged" type="cat.CustomSelectionValueRefType"/>
+				<xs:element name="enumerated" type="cat.CustomSelectionEnumRefType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cat.SelectionValueRefType">
+		<xs:attribute name="ref" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.SelectionEnumRefType">
+		<xs:attribute name="enum" type="name.EnumNameType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomSelectionValueRefType">
+		<xs:complexContent>
+			<xs:extension base="cat.SelectionValueRefType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="cat.CustomSelectionEnumRefType">
+		<xs:complexContent>
+			<xs:extension base="cat.SelectionEnumRefType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

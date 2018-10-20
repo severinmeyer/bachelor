@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines general components that
+are used by the class and catalogue schemas.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xs:include schemaLocation="name.xsd"/>
+
+
+	<!-- Dictionaries -->
+
+	<xs:complexType name="common.DictionariesType">
+		<xs:sequence>
+			<xs:element name="dictionary" type="common.DictionaryType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="common.DictionaryType">
+		<xs:sequence>
+			<xs:element name="url" type="xs:anyURI"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="name.IdType" use="required"/>
+	</xs:complexType>
+
+
+	<!-- Definitions -->
+
+	<xs:complexType name="common.DefinitionsType">
+		<xs:sequence>
+			<xs:element name="definition" type="common.DefinitionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="common.DefinitionType">
+		<xs:attribute name="dictionary" type="name.IdType" use="required"/>
+		<xs:attribute name="ref" type="xs:string" use="required"/>
+	</xs:complexType>
+
+
+	<!-- Properties -->
+
+	<xs:complexType name="common.InformationType">
+		<xs:sequence>
+			<xs:element name="title" type="common.TitleTextType"/>
+			<xs:element name="description" type="common.DescriptionTextType" minOccurs="0"/>
+			<xs:element name="definitions" type="common.DefinitionsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="common.PropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.InformationType">
+				<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="common.TypedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.PropertyType">
+				<xs:attribute name="type" type="code.PropertyTypeType" use="required"/>
+				<xs:attribute name="unit" type="code.UnitType"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="common.RangedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.TypedPropertyType">
+				<xs:sequence>
+					<xs:element name="range" type="common.RangeType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="common.RangeType">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="minInclusive" type="common.RangeBoundType"/>
+				<xs:element name="minExclusive" type="common.RangeBoundType"/>
+			</xs:choice>
+			<xs:choice minOccurs="0">
+				<xs:element name="maxInclusive" type="common.RangeBoundType"/>
+				<xs:element name="maxExclusive" type="common.RangeBoundType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="common.RangeBoundType">
+		<xs:attribute name="value" type="xs:decimal"/>
+	</xs:complexType>
+
+	<xs:complexType name="common.EnumeratedPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.PropertyType">
+				<xs:sequence>
+					<xs:element name="enums" type="common.EnumsType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="common.EnumsType">
+		<xs:sequence>
+			<xs:element name="enum" type="common.EnumType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="common.EnumType">
+		<xs:complexContent>
+			<xs:extension base="common.InformationType">
+				<xs:attribute name="name" type="name.EnumNameType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<!-- Text -->
+
+	<xs:simpleType name="common.TitleTextType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:complexType name="common.DescriptionTextType" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="br">
+				<xs:complexType/>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+
+
+	<!-- Manufacturer -->
+
+	<xs:complexType name="common.ManufacturerType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="url" type="xs:anyURI" minOccurs="0"/>
+			<xs:element name="gln" type="code.GlnType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

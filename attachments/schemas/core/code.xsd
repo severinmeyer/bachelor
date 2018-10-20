@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines enumerations and
+patterns for various code types.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<!-- Property -->
+
+	<xs:simpleType name="code.PropertyTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="boolean"/>
+			<xs:enumeration value="decimal"/>
+			<xs:enumeration value="integer"/>
+			<xs:enumeration value="string"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="code.RangedPropertyTypeType">
+		<xs:restriction base="code.PropertyTypeType">
+			<xs:enumeration value="decimal"/>
+			<xs:enumeration value="integer"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<!-- Unit -->
+
+	<xs:simpleType name="code.UnitType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Unit codes based on the International System of Units
+				http://www.bipm.org/en/measurement-units/
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<!-- SI base units -->
+			<xs:enumeration value="m"/>    <!-- metre -->
+			<xs:enumeration value="kg"/>   <!-- kilogram -->
+			<xs:enumeration value="s"/>    <!-- second -->
+			<xs:enumeration value="A"/>    <!-- ampere -->
+			<xs:enumeration value="K"/>    <!-- kelvin -->
+			<xs:enumeration value="mol"/>  <!-- mole -->
+			<xs:enumeration value="cd"/>   <!-- candela -->
+			<!-- SI named derived units -->
+			<xs:enumeration value="rad"/>  <!-- radian -->
+			<xs:enumeration value="sr"/>   <!-- steradian -->
+			<xs:enumeration value="Hz"/>   <!-- hertz -->
+			<xs:enumeration value="N"/>    <!-- newton -->
+			<xs:enumeration value="Pa"/>   <!-- pascal -->
+			<xs:enumeration value="J"/>    <!-- joule -->
+			<xs:enumeration value="W"/>    <!-- watt -->
+			<xs:enumeration value="C"/>    <!-- coulomb -->
+			<xs:enumeration value="V"/>    <!-- volt -->
+			<xs:enumeration value="F"/>    <!-- farad -->
+			<xs:enumeration value="Ω"/>    <!-- ohm -->
+			<xs:enumeration value="S"/>    <!-- siemens -->
+			<xs:enumeration value="Wb"/>   <!-- weber -->
+			<xs:enumeration value="T"/>    <!-- tesla -->
+			<xs:enumeration value="H"/>    <!-- henry -->
+			<xs:enumeration value="°C"/>   <!-- degree Celsius -->
+			<xs:enumeration value="lm"/>   <!-- lumen -->
+			<xs:enumeration value="lx"/>   <!-- lux -->
+			<xs:enumeration value="Bq"/>   <!-- becquerel -->
+			<xs:enumeration value="Gy"/>   <!-- gray -->
+			<xs:enumeration value="Sv"/>   <!-- sievert -->
+			<xs:enumeration value="kat"/>  <!-- katal -->
+			<!-- SI unit multiples -->
+			<xs:enumeration value="mm"/>   <!-- millimetre -->
+			<!-- SI unit composites -->
+			<xs:enumeration value="m2"/>   <!-- square metre -->
+			<xs:enumeration value="m3/h"/> <!-- cubic metre per hour -->
+			<!-- Non-SI units -->
+			<xs:enumeration value="bar"/>     <!-- bar -->
+			<xs:enumeration value="l"/>       <!-- litre -->
+			<xs:enumeration value="percent"/> <!-- percent -->
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<!-- Categorization -->
+
+	<xs:simpleType name="code.IcsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				International Classification for Standards
+				http://www.iso.org/iso/ics6-en.pdf
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{2}\.[0-9]{3}\.[0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<!-- Location -->
+
+	<xs:simpleType name="code.CountryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				ISO 3166-1 two-letter country code (alpha-2)
+				http://www.iso.org/iso/country_codes.htm
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="code.GlnType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Global Location Number
+				http://www.gs1.org/gln
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{13}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<!-- Quantity -->
+
+	<xs:simpleType name="code.QuantityUnitType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Quantity unit for articles, based on
+				VDI 3805-1:2011-10: Product data exchange
+				in the Building Services - Fundamentals,
+				Section 5.2.2.12, Record type 900
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BRL"/> <!-- Barrel -->
+			<xs:enumeration value="CAN"/> <!-- Can -->
+			<xs:enumeration value="CMQ"/> <!-- Cubic centimetre -->
+			<xs:enumeration value="CMT"/> <!-- Centimetre -->
+			<xs:enumeration value="DZN"/> <!-- Dozen -->
+			<xs:enumeration value="GRM"/> <!-- Gramme -->
+			<xs:enumeration value="HLT"/> <!-- Hectolitre -->
+			<xs:enumeration value="KGM"/> <!-- Kilogramme -->
+			<xs:enumeration value="KMT"/> <!-- Kilometre -->
+			<xs:enumeration value="LEF"/> <!-- Leaf -->
+			<xs:enumeration value="LTR"/> <!-- Litre -->
+			<xs:enumeration value="MMT"/> <!-- Millimetre -->
+			<xs:enumeration value="MTK"/> <!-- Square metre -->
+			<xs:enumeration value="MTQ"/> <!-- Cubic metre -->
+			<xs:enumeration value="MTR"/> <!-- Metre -->
+			<xs:enumeration value="NMP"/> <!-- Packing -->
+			<xs:enumeration value="NPL"/> <!-- Package -->
+			<xs:enumeration value="NRL"/> <!-- Roll -->
+			<xs:enumeration value="PCE"/> <!-- Piece -->
+			<xs:enumeration value="PR "/> <!-- Pair -->
+			<xs:enumeration value="SET"/> <!-- Set -->
+			<xs:enumeration value="STG"/> <!-- Bar -->
+			<xs:enumeration value="TNE"/> <!-- Tonne -->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="code.PackingUnitType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Packing unit for articles, based on
+				VDI 3805-1:2011-10: Product data exchange
+				in the Building Services - Fundamentals,
+				Section 5.2.2.12, Record type 900
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BRL"/> <!-- Barrel -->
+			<xs:enumeration value="CAN"/> <!-- Can -->
+			<xs:enumeration value="DZN"/> <!-- Dozen -->
+			<xs:enumeration value="HLT"/> <!-- Hectolitre -->
+			<xs:enumeration value="MTQ"/> <!-- Cubic metre -->
+			<xs:enumeration value="NMP"/> <!-- Packing -->
+			<xs:enumeration value="NPL"/> <!-- Package -->
+			<xs:enumeration value="NRL"/> <!-- Roll -->
+			<xs:enumeration value="PR "/> <!-- Pair -->
+			<xs:enumeration value="SET"/> <!-- Set -->
+			<xs:enumeration value="STG"/> <!-- Bar -->
+			<xs:enumeration value="TNE"/> <!-- Tonne -->
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<!-- Medium -->
+
+	<xs:simpleType name="code.MediumFormatType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				General format of media content
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Audio"/>
+			<xs:enumeration value="Document"/>
+			<xs:enumeration value="Image"/>
+			<xs:enumeration value="Model"/>
+			<xs:enumeration value="Video"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="code.MediumCategoryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Medium usage category, partially based on
+				VDI 3805-1:2011-10: Product data exchange
+				in the Building Services - Fundamentals,
+				Section 5.2.2.13, Record type 960
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Catalog"/>
+			<xs:enumeration value="Datasheet"/>
+			<xs:enumeration value="Diagram"/>
+			<xs:enumeration value="Exploded"/>
+			<xs:enumeration value="Installation"/>
+			<xs:enumeration value="Label"/>
+			<xs:enumeration value="Manual"/>
+			<xs:enumeration value="Operation"/>
+			<xs:enumeration value="Other"/>
+			<xs:enumeration value="Promotion"/>
+			<xs:enumeration value="Symbol"/>
+			<xs:enumeration value="View"/>
+			<xs:enumeration value="Website"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

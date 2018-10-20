@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines the structure of
+class definitions for the Content Parts.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/class/DEV"
+	xmlns:class="http://dna.fernuni-hagen.de/xmlns/iso16757/class/DEV"
+	targetNamespace="http://dna.fernuni-hagen.de/xmlns/iso16757/class/DEV"
+	elementFormDefault="qualified">
+
+	<xs:import schemaLocation="w3c/xml.xsd" namespace="http://www.w3.org/XML/1998/namespace"/>
+
+	<xs:include schemaLocation="core/code.xsd"/>
+	<xs:include schemaLocation="core/common.xsd"/>
+	<xs:include schemaLocation="core/name.xsd"/>
+
+
+	<!-- Root element -->
+
+	<xs:element name="class" type="class.ClassType">
+		<!-- Dictionary constraints -->
+		<xs:key name="DictionaryKey">
+			<xs:selector xpath=".//class:dictionaries/class:dictionary"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="DictionaryKeyRef" refer="DictionaryKey">
+			<xs:selector xpath=".//*"/>
+			<xs:field xpath="@dictionary"/>
+		</xs:keyref>
+
+		<!-- Selection property constraints -->
+		<xs:key name="SelectionPropertyKey">
+			<xs:selector xpath=".//class:selectionProperties/*"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="SelectionPropertyKeyRef" refer="SelectionPropertyKey">
+			<xs:selector xpath=".//class:inclusive"/>
+			<xs:field xpath="@represent"/>
+		</xs:keyref>
+		<xs:key name="EnumeratedSelectionPropertyKey">
+			<xs:selector xpath=".//class:selectionProperties/class:enumerated"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="EnumeratedSelectionPropertyKeyRef" refer="EnumeratedSelectionPropertyKey">
+			<xs:selector xpath=".//class:exclusive"/>
+			<xs:field xpath="@represent"/>
+		</xs:keyref>
+
+		<!-- Enum constraints -->
+		<!-- NOTE: It is not possible with XML Schema 1.0
+		to validate that exclusive proxies refer to enums
+		of the correct parent property. -->
+
+		<!-- BSS property constraints -->
+		<xs:key name="BssPropertyKey">
+			<xs:selector xpath=".//class:bssProperties/*"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="BssPropertyKeyRef" refer="BssPropertyKey">
+			<xs:selector xpath=".//class:parameters/class:bss"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:complexType name="class.ClassType">
+		<xs:sequence>
+			<xs:element name="metadata" type="class.MetadataType"/>
+			<xs:element name="dictionaries" type="common.DictionariesType" minOccurs="0"/>
+			<xs:element name="selectionProxies" type="class.SelectionProxiesType"/>
+			<xs:element name="selectionProperties" type="class.StaticPropertiesType"/>
+			<xs:element name="technicalProperties" type="class.TechnicalPropertiesType"/>
+			<xs:element name="bssProperties" type="class.StaticPropertiesType"/>
+		</xs:sequence>
+		<xs:attribute name="version" type="xs:decimal" use="required"/>
+		<xs:attribute ref="xml:lang"/>
+	</xs:complexType>
+
+
+	<!-- Metadata -->
+
+	<xs:complexType name="class.MetadataType">
+		<xs:sequence>
+			<xs:element name="standard" type="class.MetadataStandardType"/>
+			<xs:element name="category" type="class.MetadataCategoryType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="class.MetadataStandardType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" fixed="ISO16757"/>
+			<xs:element name="part" type="xs:nonNegativeInteger"/>
+			<xs:element name="version" type="xs:gYearMonth"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="class.MetadataCategoryType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="ics" type="code.IcsType" minOccurs="0"/>
+			<xs:element name="definitions" type="common.DefinitionsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Selection proxies -->
+
+	<xs:complexType name="class.SelectionProxiesType">
+		<xs:group ref="class.SelectionProxyChoiceGroup"/>
+	</xs:complexType>
+
+	<xs:group name="class.SelectionProxyChoiceGroup">
+		<xs:choice>
+			<xs:element name="inclusive" type="class.InclusiveProxyType"/>
+			<xs:element name="exclusive" type="class.ExclusiveProxyType"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="class.InclusiveProxyType">
+		<xs:group ref="class.SelectionProxyChoiceGroup" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:attribute name="represent" type="name.PropertyNameType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="class.ExclusiveProxyType">
+		<xs:sequence>
+			<xs:element name="if" type="class.ExclusiveProxyIfType" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="represent" type="name.PropertyNameType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="class.ExclusiveProxyIfType">
+		<xs:sequence>
+			<xs:element name="enum" type="name.EnumNameRefType" maxOccurs="unbounded"/>
+			<xs:element name="then" type="class.SelectionProxiesType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Dynamic -->
+
+	<xs:complexType name="class.DynamicPropertyType">
+		<xs:complexContent>
+			<xs:extension base="common.TypedPropertyType">
+				<xs:sequence>
+					<xs:element name="parameters" type="class.DynamicPropertyParametersType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="class.DynamicPropertyParametersType">
+		<xs:sequence>
+			<xs:element name="bss" type="name.PropertyNameRefType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Selection and BSS properties -->
+
+	<xs:complexType name="class.StaticPropertiesType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="open" type="common.TypedPropertyType"/>
+			<xs:element name="ranged" type="common.RangedPropertyType"/>
+			<xs:element name="enumerated" type="common.EnumeratedPropertyType"/>
+		</xs:choice>
+	</xs:complexType>
+
+
+	<!-- Technical properties -->
+
+	<xs:complexType name="class.TechnicalPropertiesType">
+		<xs:sequence>
+			<xs:element name="block" type="class.TechnicalBlockType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="class.TechnicalBlockType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="open" type="common.TypedPropertyType"/>
+			<xs:element name="ranged" type="common.RangedPropertyType"/>
+			<xs:element name="enumerated" type="common.EnumeratedPropertyType"/>
+			<xs:element name="dynamic" type="class.DynamicPropertyType"/>
+			<xs:element name="block" type="class.TechnicalBlockType"/>
+			<xs:element name="multiValue" type="class.TechnicalMultiValueType"/>
+		</xs:choice>
+		<xs:attribute name="name" type="name.PropertyNameType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="class.TechnicalMultiValueType">
+		<xs:choice>
+			<xs:element name="open" type="common.TypedPropertyType"/>
+			<xs:element name="ranged" type="common.RangedPropertyType"/>
+			<xs:element name="enumerated" type="common.EnumeratedPropertyType"/>
+			<xs:element name="dynamic" type="class.DynamicPropertyType"/>
+			<xs:element name="block" type="class.TechnicalBlockType"/>
+		</xs:choice>
+		<xs:attribute name="maxOccurs" type="class.MaxOccursType" use="required"/>
+	</xs:complexType>
+
+	<xs:simpleType name="class.MaxOccursType">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:positiveInteger"/>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="unbounded"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This schema defines the components that
+describe product geometry in a catalogue.
+-->
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<!-- Geometry elements root element -->
+
+	<xs:complexType name="geo.GeometryElementsType">
+		<xs:sequence>
+
+			<!-- The geometry elements are not yet implemented.
+			This schema accepts any well-formed XML content
+			inside the <geometryElements> element -->
+
+			<xs:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Basic geometric types -->
+
+	<xs:simpleType name="geo.VectorType">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list itemType="xs:decimal"/>
+			</xs:simpleType>
+			<xs:length value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

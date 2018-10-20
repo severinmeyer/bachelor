@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<!--This is an automatically generated catalogue schema for ISO 16757-16-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/part16/catalog/DEV" xmlns:cat="http://dna.fernuni-hagen.de/xmlns/iso16757/part16/catalog/DEV" targetNamespace="http://dna.fernuni-hagen.de/xmlns/iso16757/part16/catalog/DEV" elementFormDefault="qualified">
+  <xs:include schemaLocation="../../schemas/catalog.xsd"/>
+  <!--Root element-->
+  <xs:element name="catalog" type="cat.CatalogType">
+    <!--===================-->
+    <!--Generic constraints-->
+    <!--===================-->
+    <!--Dictionaries-->
+    <xs:key name="DictionaryKey">
+      <xs:selector xpath=".//cat:dictionaries/cat:dictionary"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+    <xs:keyref name="DictionaryKeyRef" refer="DictionaryKey">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@dictionary"/>
+    </xs:keyref>
+    <!--Custom selection properties-->
+    <xs:key name="CustomPropertyKey">
+      <xs:selector xpath=".//cat:customSelectionProperties/*"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+    <xs:keyref name="CustomPropertyKeyRef" refer="CustomPropertyKey">
+      <xs:selector xpath=".//cat:customSelectionValues/*"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+    <!--Custom selection enums-->
+    <!--NOTE: It is not possible with XML Schema 1.0-->
+    <!--to validate that custom enumerated selection-->
+    <!--values refer to enums of the correct property.-->
+    <!--Articles-->
+    <xs:key name="ArticleKey">
+      <xs:selector xpath=".//cat:articleElements/cat:article"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ArticleKeyRef" refer="ArticleKey">
+      <xs:selector xpath=".//cat:product/cat:article | .//cat:accessory/cat:article"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Descriptions-->
+    <xs:key name="DescriptionKey">
+      <xs:selector xpath=".//cat:descriptionElements/cat:description"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="DescriptionKeyRef" refer="DescriptionKey">
+      <xs:selector xpath=".//cat:product/cat:description | .//cat:accessory/cat:description"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Media-->
+    <xs:key name="MediaKey">
+      <xs:selector xpath=".//cat:mediaElements/cat:media"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="MediaAttributeKeyRef" refer="MediaKey">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@media"/>
+    </xs:keyref>
+    <xs:keyref name="MediaElementKeyRef" refer="MediaKey">
+      <xs:selector xpath=".//cat:media"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Conformance-->
+    <xs:key name="ConformanceKey">
+      <xs:selector xpath=".//cat:conformanceElements/cat:conformance"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ConformanceKeyRef" refer="ConformanceKey">
+      <xs:selector xpath=".//cat:product/cat:conformance | .//cat:accessory/cat:conformance"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory groups-->
+    <xs:key name="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="AccessoryGroupKeyRef" refer="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group/cat:group"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="AccessoryRootGroupKeyRef" refer="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:product/cat:accessories"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory products-->
+    <xs:key name="AccessoryProductKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryProducts/cat:accessory"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="AccessoryProductKeyRef" refer="AccessoryProductKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group/cat:accessory"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory product conditions-->
+    <xs:keyref name="CustomPropertyElementKeyRef" refer="CustomPropertyKey">
+      <xs:selector xpath=".//cat:custom"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Unique custom property references in index-->
+    <xs:unique name="UniqueCustomPropertyNameRef">
+      <xs:selector xpath=".//cat:product/cat:index/*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <!--Custom values in index-->
+    <xs:key name="CustomOpenValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:open"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="CustomOpenValueKeyRef" refer="CustomOpenValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:open"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:key name="CustomRangedValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:ranged"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="CustomRangedValueKeyRef" refer="CustomRangedValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:ranged"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:key name="CustomEnumeratedValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:enumerated"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@enum"/>
+    </xs:key>
+    <xs:keyref name="CustomEnumeratedValueKeyRef" refer="CustomEnumeratedValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:enumerated"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@enum"/>
+    </xs:keyref>
+    <!--=========================-->
+    <!--Product index constraints-->
+    <!--=========================-->
+    <!--RadiatorType-->
+    <xs:key name="RadiatorTypeEnumKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:RadiatorType"/>
+      <xs:field xpath="@enum"/>
+    </xs:key>
+    <xs:keyref name="RadiatorTypeEnumKeyRef" refer="RadiatorTypeEnumKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:RadiatorType"/>
+      <xs:field xpath="@enum"/>
+    </xs:keyref>
+    <!--TypeDesignation-->
+    <xs:key name="TypeDesignationValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:TypeDesignation"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="TypeDesignationValueKeyRef" refer="TypeDesignationValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:TypeDesignation"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--PressureStage-->
+    <xs:key name="PressureStageValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:PressureStage"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="PressureStageValueKeyRef" refer="PressureStageValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:PressureStage"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Surface-->
+    <xs:key name="SurfaceValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:Surface"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="SurfaceValueKeyRef" refer="SurfaceValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:Surface"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--PrimaryColor-->
+    <xs:key name="PrimaryColorValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:PrimaryColor"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="PrimaryColorValueKeyRef" refer="PrimaryColorValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:PrimaryColor"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--SecondaryColor-->
+    <xs:key name="SecondaryColorValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:SecondaryColor"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="SecondaryColorValueKeyRef" refer="SecondaryColorValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:SecondaryColor"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--ConnectionType-->
+    <xs:key name="ConnectionTypeValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:ConnectionType"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ConnectionTypeValueKeyRef" refer="ConnectionTypeValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:ConnectionType"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--DesignVariation-->
+    <xs:key name="DesignVariationValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:DesignVariation"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="DesignVariationValueKeyRef" refer="DesignVariationValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:DesignVariation"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Availability-->
+    <xs:key name="AvailabilityValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:Availability"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="AvailabilityValueKeyRef" refer="AvailabilityValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:Availability"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--ProductElement-->
+    <xs:key name="ProductElementValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:ProductElement"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ProductElementValueKeyRef" refer="ProductElementValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:ProductElement"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Length-->
+    <xs:key name="LengthValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:Length"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="LengthValueKeyRef" refer="LengthValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:Length"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--============================-->
+    <!--Product property constraints-->
+    <!--============================-->
+    <!--BaseData-->
+    <xs:key name="BaseDataBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:BaseData"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="BaseDataBlockKeyRef" refer="BaseDataBlockKey">
+      <xs:selector xpath=".//cat:product/cat:BaseData"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Length-->
+    <xs:key name="LengthBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:Length"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="LengthBlockKeyRef" refer="LengthBlockKey">
+      <xs:selector xpath=".//cat:product/cat:Length"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Output-->
+    <xs:key name="OutputBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:Output"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="OutputBlockKeyRef" refer="OutputBlockKey">
+      <xs:selector xpath=".//cat:product/cat:Output"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--PressureLoss-->
+    <xs:key name="PressureLossBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:PressureLoss"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="PressureLossBlockKeyRef" refer="PressureLossBlockKey">
+      <xs:selector xpath=".//cat:product/cat:PressureLoss"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Fixing-->
+    <xs:key name="FixingBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:Fixing"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="FixingBlockKeyRef" refer="FixingBlockKey">
+      <xs:selector xpath=".//cat:product/cat:Fixing"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--==================-->
+    <!--End of constraints-->
+    <!--==================-->
+  </xs:element>
+  <!--Metadata standard-->
+  <xs:group name="content.MetadataStandardGroup">
+    <xs:sequence>
+      <xs:element name="part" type="xs:nonNegativeInteger" fixed="16"/>
+      <xs:element name="version" type="xs:gYearMonth" fixed="2016-01"/>
+    </xs:sequence>
+  </xs:group>
+  <!--Selection property names-->
+  <xs:simpleType name="content.SelectionPropertyNamesType">
+    <xs:restriction base="name.PropertyNameType">
+      <xs:enumeration value="RadiatorType"/>
+      <xs:enumeration value="TypeDesignation"/>
+      <xs:enumeration value="PressureStage"/>
+      <xs:enumeration value="Surface"/>
+      <xs:enumeration value="PrimaryColor"/>
+      <xs:enumeration value="SecondaryColor"/>
+      <xs:enumeration value="ConnectionType"/>
+      <xs:enumeration value="DesignVariation"/>
+      <xs:enumeration value="Availability"/>
+      <xs:enumeration value="ProductElement"/>
+      <xs:enumeration value="Length"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Selection values-->
+  <xs:group name="content.SelectionValuesGroup">
+    <xs:sequence>
+      <xs:element name="RadiatorType" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:restriction base="cat.SelectionEnumType">
+              <xs:attribute name="enum" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="name.EnumNameType">
+                    <xs:enumeration value="Flat"/>
+                    <xs:enumeration value="Bathroom"/>
+                    <xs:enumeration value="Sectional"/>
+                    <xs:enumeration value="Convector"/>
+                    <xs:enumeration value="Surface"/>
+                    <xs:enumeration value="Design"/>
+                    <xs:enumeration value="Electric"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:restriction>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TypeDesignation" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="PressureStage" minOccurs="0" maxOccurs="unbounded" type="cat.DecimalSelectionValueType"/>
+      <xs:element name="Surface" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="PrimaryColor" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="SecondaryColor" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="ConnectionType" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="DesignVariation" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="Availability" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="ProductElement" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="Length" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:restriction base="cat.DecimalSelectionValueType">
+              <xs:minExclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <!--Technical property names-->
+  <xs:simpleType name="content.TechnicalPropertyNamesType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BaseData/Height"/>
+          <xs:enumeration value="BaseData/Depth"/>
+          <xs:enumeration value="BaseData/Type"/>
+          <xs:enumeration value="BaseData/Registration"/>
+          <xs:enumeration value="BaseData/OutputFormat"/>
+          <xs:enumeration value="BaseData/SectionLength"/>
+          <xs:enumeration value="BaseData/DifferenceLength"/>
+          <xs:enumeration value="BaseData/IneffectiveLength"/>
+          <xs:enumeration value="BaseData/ReducedOutput"/>
+          <xs:enumeration value="BaseData/Radiation"/>
+          <xs:enumeration value="BaseData/CanSit"/>
+          <xs:enumeration value="BaseData/CanClimb"/>
+          <xs:enumeration value="Length/Length"/>
+          <xs:enumeration value="Output/Output"/>
+          <xs:enumeration value="Output/Exponent"/>
+          <xs:enumeration value="Output/Area"/>
+          <xs:enumeration value="Output/Volume"/>
+          <xs:enumeration value="Output/MinFlow"/>
+          <xs:enumeration value="Output/Weight"/>
+          <xs:enumeration value="Output/AddWeight"/>
+          <xs:enumeration value="PressureLoss/Zeta"/>
+          <xs:enumeration value="PressureLoss/Drop"/>
+          <xs:enumeration value="PressureLoss/KvConnection"/>
+          <xs:enumeration value="PressureLoss/KvLength"/>
+          <xs:enumeration value="Fixing/WeightPerAxis"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string"/>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!--Technical values-->
+  <xs:group name="content.TechnicalValuesGroup">
+    <xs:sequence>
+      <xs:element name="BaseData" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="Height" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Depth" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Type" minOccurs="0" type="cat.StringTechnicalValueType"/>
+                <xs:element name="Registration" minOccurs="0" type="cat.StringTechnicalValueType"/>
+                <xs:element name="OutputFormat" minOccurs="0">
+                  <xs:complexType>
+                    <xs:attribute name="enum" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="name.EnumNameType">
+                          <xs:enumeration value="Metre"/>
+                          <xs:enumeration value="Section"/>
+                          <xs:enumeration value="Absolute"/>
+                          <xs:enumeration value="Electric"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="SectionLength" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="DifferenceLength" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="IneffectiveLength" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="ReducedOutput" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Radiation" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="CanSit" minOccurs="0" type="cat.BooleanTechnicalValueType"/>
+                <xs:element name="CanClimb" minOccurs="0" type="cat.BooleanTechnicalValueType"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Length" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="Length" minOccurs="0">
+                  <xs:complexType>
+                    <xs:simpleContent>
+                      <xs:restriction base="cat.DecimalTechnicalValueType">
+                        <xs:minExclusive value="0"/>
+                      </xs:restriction>
+                    </xs:simpleContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Output" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="Output" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Exponent" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Area" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Volume" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="MinFlow" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Weight" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="AddWeight" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PressureLoss" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="Zeta" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="Drop" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="KvConnection" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+                <xs:element name="KvLength" minOccurs="0" type="cat.DecimalTechnicalValueType"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Fixing" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="WeightPerAxis" type="cat.DynamicTechnicalValueType" minOccurs="0"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <!--Bss property names-->
+  <xs:simpleType name="content.BssPropertyNamesType">
+    <xs:restriction base="name.PropertyNameType">
+      <xs:enumeration value="RequirementClass"/>
+      <xs:enumeration value="AttachmentAxes"/>
+      <xs:enumeration value="FloorDistance"/>
+      <xs:enumeration value="WallDistance"/>
+      <xs:enumeration value="IsFreestanding"/>
+      <xs:enumeration value="HasTopAccess"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Product index-->
+  <xs:group name="content.ProductIndexGroup">
+    <xs:sequence>
+      <xs:element name="RadiatorType" type="cat.SelectionEnumRefType" minOccurs="0"/>
+      <xs:element name="TypeDesignation" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="PressureStage" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="Surface" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="PrimaryColor" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="SecondaryColor" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="ConnectionType" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="DesignVariation" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="Availability" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="ProductElement" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="Length" type="cat.SelectionValueRefType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:group>
+  <!--Product properties-->
+  <xs:group name="content.ProductPropertiesGroup">
+    <xs:sequence>
+      <xs:element name="BaseData" type="name.IdRefType"/>
+      <xs:element name="Length" type="name.IdRefType"/>
+      <xs:element name="Output" type="name.IdRefType"/>
+      <xs:element name="PressureLoss" type="name.IdRefType"/>
+      <xs:element name="Fixing" type="name.IdRefType"/>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>

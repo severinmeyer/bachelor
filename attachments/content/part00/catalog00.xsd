@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<!--This is an automatically generated catalogue schema for ISO 16757-00-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://dna.fernuni-hagen.de/xmlns/iso16757/part00/catalog/DEV" xmlns:cat="http://dna.fernuni-hagen.de/xmlns/iso16757/part00/catalog/DEV" targetNamespace="http://dna.fernuni-hagen.de/xmlns/iso16757/part00/catalog/DEV" elementFormDefault="qualified">
+  <xs:include schemaLocation="../../schemas/catalog.xsd"/>
+  <!--Root element-->
+  <xs:element name="catalog" type="cat.CatalogType">
+    <!--===================-->
+    <!--Generic constraints-->
+    <!--===================-->
+    <!--Dictionaries-->
+    <xs:key name="DictionaryKey">
+      <xs:selector xpath=".//cat:dictionaries/cat:dictionary"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+    <xs:keyref name="DictionaryKeyRef" refer="DictionaryKey">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@dictionary"/>
+    </xs:keyref>
+    <!--Custom selection properties-->
+    <xs:key name="CustomPropertyKey">
+      <xs:selector xpath=".//cat:customSelectionProperties/*"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+    <xs:keyref name="CustomPropertyKeyRef" refer="CustomPropertyKey">
+      <xs:selector xpath=".//cat:customSelectionValues/*"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+    <!--Custom selection enums-->
+    <!--NOTE: It is not possible with XML Schema 1.0-->
+    <!--to validate that custom enumerated selection-->
+    <!--values refer to enums of the correct property.-->
+    <!--Articles-->
+    <xs:key name="ArticleKey">
+      <xs:selector xpath=".//cat:articleElements/cat:article"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ArticleKeyRef" refer="ArticleKey">
+      <xs:selector xpath=".//cat:product/cat:article | .//cat:accessory/cat:article"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Descriptions-->
+    <xs:key name="DescriptionKey">
+      <xs:selector xpath=".//cat:descriptionElements/cat:description"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="DescriptionKeyRef" refer="DescriptionKey">
+      <xs:selector xpath=".//cat:product/cat:description | .//cat:accessory/cat:description"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Media-->
+    <xs:key name="MediaKey">
+      <xs:selector xpath=".//cat:mediaElements/cat:media"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="MediaAttributeKeyRef" refer="MediaKey">
+      <xs:selector xpath=".//*"/>
+      <xs:field xpath="@media"/>
+    </xs:keyref>
+    <xs:keyref name="MediaElementKeyRef" refer="MediaKey">
+      <xs:selector xpath=".//cat:media"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Conformance-->
+    <xs:key name="ConformanceKey">
+      <xs:selector xpath=".//cat:conformanceElements/cat:conformance"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ConformanceKeyRef" refer="ConformanceKey">
+      <xs:selector xpath=".//cat:product/cat:conformance | .//cat:accessory/cat:conformance"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory groups-->
+    <xs:key name="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="AccessoryGroupKeyRef" refer="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group/cat:group"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="AccessoryRootGroupKeyRef" refer="AccessoryGroupKey">
+      <xs:selector xpath=".//cat:product/cat:accessories"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory products-->
+    <xs:key name="AccessoryProductKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryProducts/cat:accessory"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="AccessoryProductKeyRef" refer="AccessoryProductKey">
+      <xs:selector xpath=".//cat:accessoryElements/cat:accessoryGroups/cat:group/cat:accessory"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Accessory product conditions-->
+    <xs:keyref name="CustomPropertyElementKeyRef" refer="CustomPropertyKey">
+      <xs:selector xpath=".//cat:custom"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--Unique custom property references in index-->
+    <xs:unique name="UniqueCustomPropertyNameRef">
+      <xs:selector xpath=".//cat:product/cat:index/*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <!--Custom values in index-->
+    <xs:key name="CustomOpenValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:open"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="CustomOpenValueKeyRef" refer="CustomOpenValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:open"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:key name="CustomRangedValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:ranged"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="CustomRangedValueKeyRef" refer="CustomRangedValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:ranged"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:key name="CustomEnumeratedValueKey">
+      <xs:selector xpath=".//cat:customSelectionValues/cat:enumerated"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@enum"/>
+    </xs:key>
+    <xs:keyref name="CustomEnumeratedValueKeyRef" refer="CustomEnumeratedValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:enumerated"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@enum"/>
+    </xs:keyref>
+    <!--=========================-->
+    <!--Product index constraints-->
+    <!--=========================-->
+    <!--AirDuctType-->
+    <xs:key name="AirDuctTypeEnumKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:AirDuctType"/>
+      <xs:field xpath="@enum"/>
+    </xs:key>
+    <xs:keyref name="AirDuctTypeEnumKeyRef" refer="AirDuctTypeEnumKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:AirDuctType"/>
+      <xs:field xpath="@enum"/>
+    </xs:keyref>
+    <!--NoOfSlot-->
+    <xs:key name="NoOfSlotValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:NoOfSlot"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="NoOfSlotValueKeyRef" refer="NoOfSlotValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:NoOfSlot"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--CeilingCompensation-->
+    <xs:key name="CeilingCompensationValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:CeilingCompensation"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="CeilingCompensationValueKeyRef" refer="CeilingCompensationValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:CeilingCompensation"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--OutletAirDirection-->
+    <xs:key name="OutletAirDirectionValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:OutletAirDirection"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="OutletAirDirectionValueKeyRef" refer="OutletAirDirectionValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:OutletAirDirection"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--FixedOrAdjustable-->
+    <xs:key name="FixedOrAdjustableValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:FixedOrAdjustable"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="FixedOrAdjustableValueKeyRef" refer="FixedOrAdjustableValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:FixedOrAdjustable"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--InletAirOrOutletAir-->
+    <xs:key name="InletAirOrOutletAirValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:InletAirOrOutletAir"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="InletAirOrOutletAirValueKeyRef" refer="InletAirOrOutletAirValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:InletAirOrOutletAir"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--FrameShape-->
+    <xs:key name="FrameShapeValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:FrameShape"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="FrameShapeValueKeyRef" refer="FrameShapeValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:FrameShape"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--FrameType-->
+    <xs:key name="FrameTypeValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:FrameType"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="FrameTypeValueKeyRef" refer="FrameTypeValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:FrameType"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--ConstructionType-->
+    <xs:key name="ConstructionTypeValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:ConstructionType"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="ConstructionTypeValueKeyRef" refer="ConstructionTypeValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:ConstructionType"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--TwistInsert-->
+    <xs:key name="TwistInsertValueKey">
+      <xs:selector xpath=".//cat:selectionValues/cat:TwistInsert"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="TwistInsertValueKeyRef" refer="TwistInsertValueKey">
+      <xs:selector xpath=".//cat:product/cat:index/cat:TwistInsert"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--============================-->
+    <!--Product property constraints-->
+    <!--============================-->
+    <!--RootBlock-->
+    <xs:key name="RootBlockBlockKey">
+      <xs:selector xpath=".//cat:technicalValues/cat:RootBlock"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="RootBlockBlockKeyRef" refer="RootBlockBlockKey">
+      <xs:selector xpath=".//cat:product/cat:RootBlock"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <!--==================-->
+    <!--End of constraints-->
+    <!--==================-->
+  </xs:element>
+  <!--Metadata standard-->
+  <xs:group name="content.MetadataStandardGroup">
+    <xs:sequence>
+      <xs:element name="part" type="xs:nonNegativeInteger" fixed="00"/>
+      <xs:element name="version" type="xs:gYearMonth" fixed="2016-01"/>
+    </xs:sequence>
+  </xs:group>
+  <!--Selection property names-->
+  <xs:simpleType name="content.SelectionPropertyNamesType">
+    <xs:restriction base="name.PropertyNameType">
+      <xs:enumeration value="AirDuctType"/>
+      <xs:enumeration value="NoOfSlot"/>
+      <xs:enumeration value="CeilingCompensation"/>
+      <xs:enumeration value="OutletAirDirection"/>
+      <xs:enumeration value="FixedOrAdjustable"/>
+      <xs:enumeration value="InletAirOrOutletAir"/>
+      <xs:enumeration value="FrameShape"/>
+      <xs:enumeration value="FrameType"/>
+      <xs:enumeration value="ConstructionType"/>
+      <xs:enumeration value="TwistInsert"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Selection values-->
+  <xs:group name="content.SelectionValuesGroup">
+    <xs:sequence>
+      <xs:element name="AirDuctType" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:restriction base="cat.SelectionEnumType">
+              <xs:attribute name="enum" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="name.EnumNameType">
+                    <xs:enumeration value="SlottedAirDuct"/>
+                    <xs:enumeration value="WideAngleNozzle"/>
+                    <xs:enumeration value="VentilationGrid"/>
+                    <xs:enumeration value="CeilingAirDuct"/>
+                    <xs:enumeration value="FloorAirDuct"/>
+                    <xs:enumeration value="SourceAirDuct"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:restriction>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="NoOfSlot" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="CeilingCompensation" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="OutletAirDirection" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="FixedOrAdjustable" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="InletAirOrOutletAir" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="FrameShape" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="FrameType" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="ConstructionType" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+      <xs:element name="TwistInsert" minOccurs="0" maxOccurs="unbounded" type="cat.StringSelectionValueType"/>
+    </xs:sequence>
+  </xs:group>
+  <!--Technical property names-->
+  <xs:simpleType name="content.TechnicalPropertyNamesType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="RootBlock/Prop"/>
+          <xs:enumeration value="RootBlock/TestFunction"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="RootBlock/MultiBlock\[[0-9]+\]/MultiProp\[[0-9]+\]"/>
+          <xs:pattern value="RootBlock/MultiBlock\[[0-9]+\]/Prop"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!--Technical values-->
+  <xs:group name="content.TechnicalValuesGroup">
+    <xs:sequence>
+      <xs:element name="RootBlock" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="cat.TechnicalRootBlockType">
+              <xs:sequence>
+                <xs:element name="MultiBlock" minOccurs="0" maxOccurs="2">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="MultiProp" minOccurs="0" maxOccurs="3" type="cat.StringTechnicalValueType"/>
+                      <xs:element name="Prop" minOccurs="0" type="cat.StringTechnicalValueType"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="Prop" minOccurs="0" type="cat.StringTechnicalValueType"/>
+                <xs:element name="TestFunction" type="cat.DynamicTechnicalValueType" minOccurs="0"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <!--Bss property names-->
+  <xs:simpleType name="content.BssPropertyNamesType">
+    <xs:restriction base="name.PropertyNameType"/>
+  </xs:simpleType>
+  <!--Product index-->
+  <xs:group name="content.ProductIndexGroup">
+    <xs:sequence>
+      <xs:element name="AirDuctType" type="cat.SelectionEnumRefType" minOccurs="0"/>
+      <xs:element name="NoOfSlot" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="CeilingCompensation" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="OutletAirDirection" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="FixedOrAdjustable" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="InletAirOrOutletAir" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="FrameShape" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="FrameType" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="ConstructionType" type="cat.SelectionValueRefType" minOccurs="0"/>
+      <xs:element name="TwistInsert" type="cat.SelectionValueRefType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:group>
+  <!--Product properties-->
+  <xs:group name="content.ProductPropertiesGroup">
+    <xs:sequence>
+      <xs:element name="RootBlock" type="name.IdRefType"/>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>
